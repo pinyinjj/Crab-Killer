@@ -24,28 +24,39 @@ Global $i = False
 Global $j = False
 Global $g_bPaused = False
 Global $msgcount = 0
-HotKeySet("{PAUSE}", "TogglePause")
+HotKeySet("{PAUSE}", "_exit")
 
 
 
-$Form1 = GUICreate("螃蟹杀手", 216, 101, 192, 124)
-GUICtrlCreateLabel("窗口数量", 16, 16, 50, 25)
-Local $iWindow = GUICtrlCreateCombo("1", 98, 16, 81, 25, BitOR($CBS_DROPDOWN, $CBS_AUTOHSCROLL))
+GUICreate("螃蟹杀手", 253, 124, 192, 124)
+GUICtrlCreateLabel("窗口数量", 16, 20, 50, 17)
+Local $iWindow = GUICtrlCreateCombo("1", 74, 16, 41, 25, BitOR($CBS_DROPDOWN, $CBS_AUTOHSCROLL))
 GUICtrlSetOnEvent(-1, "WindowCount")
 GUICtrlSetData($iWindow, "2|3|4|5", "1")
-Local $idCheckbox = GUICtrlCreateCheckbox("运行/停止)", 16, 56, 80, 17)
+Local $idCheckbox = GUICtrlCreateCheckbox("运行/停止", 20, 56, 80, 17)
 GUICtrlSetOnEvent(-1, "Press")
-Local $iAntiAFK = GUICtrlCreateCheckbox("小号防暂离", 106, 56, 80, 17)
+Local $iAntiAFK = GUICtrlCreateCheckbox("小号防暂离", 20, 88, 80, 17)
 GUICtrlSetOnEvent(-1, "AntiAFK")
-GUISetOnEvent($GUI_EVENT_CLOSE, "CLOSEButton") ;关闭
-
-
+$Input1 = GUICtrlCreateInput("50", 184, 16, 49, 21)
+GUICtrlSetOnEvent(-1, "_exit")
+GUICtrlCreateLabel("技能次数", 128, 19, 50, 17)
+$Button1 = GUICtrlCreateButton("关闭", 160, 80, 67, 25)
+GUICtrlSetOnEvent(-1, "_exit")
+GUISetOnEvent($GUI_EVENT_CLOSE, "_exit")
+$sk = GUICtrlRead($Input1)
 GUISetState(@SW_SHOW)
 
 
 While 1
 	Sleep(100)
 WEnd
+
+Func _exit()
+	If @GUI_CtrlId = $GUI_EVENT_CLOSE Then
+	releasekey()
+	Exit
+	EndIf
+EndFunc   ;==>_exit
 
 Func WindowCount()
 	$cvalue = GUICtrlRead($iWindow)
@@ -91,10 +102,6 @@ Func WindowCount()
 	EndIf
 EndFunc   ;==>WindowCount
 
-Func CLOSEButton()
-	Exit
-EndFunc   ;==>CLOSEButton
-
 Func _IsChecked($idControlID)
 	Return BitAND(GUICtrlRead($idControlID), $GUI_CHECKED) = $GUI_CHECKED
 EndFunc   ;==>_IsChecked
@@ -108,42 +115,31 @@ EndFunc   ;==>TogglePause
 
 Func AntiAFK()
 	$cvalue = GUICtrlRead($iWindow)
-	If $msgcount < 2 Then
-		MsgBox($MB_SYSTEMMODAL, "", "已开启" & $cvalue - 1 & "个反AFK", 10)
-		$msgcount = $msgcount + 1
+	If $cvalue == 2 Then
+		ControlSend($handle2, "", "", "1")
+		Sleep(100)
+	ElseIf $cvalue == 3 Then
+		ControlSend($handle2, "", "", "1")
+		Sleep(100)
+		ControlSend($handle3, "", "", "1")
+		Sleep(100)
+	ElseIf $cvalue == 4 Then
+		ControlSend($handle2, "", "", "1")
+		Sleep(100)
+		ControlSend($handle3, "", "", "1")
+		Sleep(100)
+		ControlSend($handle4, "", "", "1")
+		Sleep(100)
+	ElseIf $cvalue == 5 Then
+		ControlSend($handle2, "", "", "1")
+		Sleep(100)
+		ControlSend($handle3, "", "", "1")
+		Sleep(100)
+		ControlSend($handle4, "", "", "1")
+		Sleep(100)
+		ControlSend($handle5, "", "", "1")
+		Sleep(100)
 	EndIf
-	While 1
-		If _IsChecked($iAntiAFK) Then
-			If $cvalue == 2 Then
-				ControlSend($handle2, "", "", "1")
-				Sleep(100)
-			ElseIf $cvalue == 3 Then
-				ControlSend($handle2, "", "", "1")
-				Sleep(100)
-				ControlSend($handle3, "", "", "1")
-				Sleep(100)
-			ElseIf $cvalue == 4 Then
-				ControlSend($handle2, "", "", "1")
-				Sleep(100)
-				ControlSend($handle3, "", "", "1")
-				Sleep(100)
-				ControlSend($handle4, "", "", "1")
-				Sleep(100)
-			ElseIf $cvalue == 5 Then
-				ControlSend($handle2, "", "", "1")
-				Sleep(100)
-				ControlSend($handle3, "", "", "1")
-				Sleep(100)
-				ControlSend($handle4, "", "", "1")
-				Sleep(100)
-				ControlSend($handle5, "", "", "1")
-				Sleep(100)
-			EndIf
-			Sleep(299000)
-		Else
-			ExitLoop
-		EndIf
-	WEnd
 EndFunc   ;==>AntiAFK
 
 Func Press()
@@ -154,8 +150,11 @@ Func Press()
 			releasekey()
 			$a = $a + 1
 			Sleep(1500)
-			If $a > 55 Then
-				Sleep(3000)
+			If $a > $sk Then
+				If _IsChecked($iAntiAFK) Then
+					AntiAFK()
+				EndIf
+				Sleep(5000)
 				ControlSend($handle1, "", "", "2")
 				Sleep(30000)
 				ControlSend($handle1, "", "", "{SPACE}")
@@ -164,7 +163,7 @@ Func Press()
 			EndIf
 			releasekey()
 		Else
-			ExitLoop
+			Sleep(100)
 		EndIf
 	WEnd
 EndFunc   ;==>Press
