@@ -1,4 +1,4 @@
-﻿#NoTrayIcon
+#NoTrayIcon
 #RequireAdmin
 #include <MsgBoxConstants.au3>
 #include <AutoItConstants.au3>
@@ -33,17 +33,21 @@ GUICtrlCreateLabel("窗口数量", 16, 20, 50, 17)
 Local $iWindow = GUICtrlCreateCombo("1", 74, 16, 41, 25, BitOR($CBS_DROPDOWN, $CBS_AUTOHSCROLL))
 GUICtrlSetOnEvent(-1, "WindowCount")
 GUICtrlSetData($iWindow, "2|3|4|5", "1")
-Local $idCheckbox = GUICtrlCreateCheckbox("运行/停止", 20, 56, 80, 17)
+Local $idCheckbox = GUICtrlCreateCheckbox("螃/不螃", 20, 56, 80, 17)
 GUICtrlSetOnEvent(-1, "Press")
 Local $iAntiAFK = GUICtrlCreateCheckbox("小号防暂离", 20, 88, 80, 17)
 GUICtrlSetOnEvent(-1, "AntiAFK")
+Local $allafk = GUICtrlCreateCheckbox("纯挂机", 106, 88, 56, 17)
+GUICtrlSetOnEvent(-1, "AAFFKK")
 $Input1 = GUICtrlCreateInput("50", 184, 16, 49, 21)
 GUICtrlSetOnEvent(-1, "_exit")
 GUICtrlCreateLabel("技能次数", 128, 19, 50, 17)
-$Button1 = GUICtrlCreateButton("关闭", 160, 80, 67, 25)
-GUICtrlSetOnEvent(-1, "_exit")
 GUISetOnEvent($GUI_EVENT_CLOSE, "_exit")
+$Input2 = GUICtrlCreateInput("4", 160, 52, 41, 21)
+GUICtrlCreateLabel("挂机循环", 104, 56, 52, 25)
+GUICtrlCreateLabel("分钟", 208, 56, 36, 25)
 $sk = GUICtrlRead($Input1)
+$afktimer = GUICtrlRead($Input2)
 GUISetState(@SW_SHOW)
 
 
@@ -51,19 +55,17 @@ While 1
 	Sleep(100)
 WEnd
 
+
+
 Func _exit()
 	If @GUI_CtrlId = $GUI_EVENT_CLOSE Then
-	releasekey()
-	Exit
+		releasekey()
+		Exit
 	EndIf
 EndFunc   ;==>_exit
 
 Func WindowCount()
 	$cvalue = GUICtrlRead($iWindow)
-	If $msgcount < 2 Then
-		MsgBox($MB_SYSTEMMODAL, "", "当前窗口数量为:" & $cvalue, 10)
-		$msgcount = $msgcount + 1
-	EndIf
 	If $cvalue == 1 Then
 		Global $wow1 = $aProcessList[1][1]
 		Global $handle1 = _ProcessGetHWnd($wow1, 1, "魔兽世界")
@@ -102,6 +104,50 @@ Func WindowCount()
 	EndIf
 EndFunc   ;==>WindowCount
 
+Func AAFFKK()
+	$cvalue = GUICtrlRead($iWindow)
+	While 1
+		If _IsChecked($allafk) Then
+			If $cvalue == 1 Then
+				ControlSend($handle1, "", "", "1")
+			ElseIf $cvalue == 2 Then
+				ControlSend($handle1, "", "", "1")
+				Sleep(100)
+				ControlSend($handle2, "", "", "1")
+				Sleep(100)
+			ElseIf $cvalue == 3 Then
+				ControlSend($handle1, "", "", "1")
+				Sleep(100)
+				ControlSend($handle2, "", "", "1")
+				Sleep(100)
+				ControlSend($handle3, "", "", "1")
+				Sleep(100)
+			ElseIf $cvalue == 4 Then
+				ControlSend($handle1, "", "", "1")
+				Sleep(100)
+				ControlSend($handle2, "", "", "1")
+				Sleep(100)
+				ControlSend($handle3, "", "", "1")
+				Sleep(100)
+				ControlSend($handle4, "", "", "1")
+				Sleep(100)
+			ElseIf $cvalue == 5 Then
+				ControlSend($handle1, "", "", "1")
+				Sleep(100)
+				ControlSend($handle2, "", "", "1")
+				Sleep(100)
+				ControlSend($handle3, "", "", "1")
+				Sleep(100)
+				ControlSend($handle4, "", "", "1")
+				Sleep(100)
+				ControlSend($handle5, "", "", "1")
+				Sleep(100)
+			EndIf
+			Sleep($afktimer*1000*60)
+		EndIf
+	WEnd
+EndFunc   ;==>AAFFKK
+
 Func _IsChecked($idControlID)
 	Return BitAND(GUICtrlRead($idControlID), $GUI_CHECKED) = $GUI_CHECKED
 EndFunc   ;==>_IsChecked
@@ -115,31 +161,35 @@ EndFunc   ;==>TogglePause
 
 Func AntiAFK()
 	$cvalue = GUICtrlRead($iWindow)
-	If $cvalue == 2 Then
-		ControlSend($handle2, "", "", "1")
-		Sleep(100)
-	ElseIf $cvalue == 3 Then
-		ControlSend($handle2, "", "", "1")
-		Sleep(100)
-		ControlSend($handle3, "", "", "1")
-		Sleep(100)
-	ElseIf $cvalue == 4 Then
-		ControlSend($handle2, "", "", "1")
-		Sleep(100)
-		ControlSend($handle3, "", "", "1")
-		Sleep(100)
-		ControlSend($handle4, "", "", "1")
-		Sleep(100)
-	ElseIf $cvalue == 5 Then
-		ControlSend($handle2, "", "", "1")
-		Sleep(100)
-		ControlSend($handle3, "", "", "1")
-		Sleep(100)
-		ControlSend($handle4, "", "", "1")
-		Sleep(100)
-		ControlSend($handle5, "", "", "1")
-		Sleep(100)
+	If _IsChecked($iAntiAFK) Then
+		If $cvalue == 2 Then
+			ControlSend($handle2, "", "", "1")
+			Sleep(100)
+		ElseIf $cvalue == 3 Then
+			ControlSend($handle2, "", "", "1")
+			Sleep(100)
+			ControlSend($handle3, "", "", "1")
+			Sleep(100)
+		ElseIf $cvalue == 4 Then
+			ControlSend($handle2, "", "", "1")
+			Sleep(100)
+			ControlSend($handle3, "", "", "1")
+			Sleep(100)
+			ControlSend($handle4, "", "", "1")
+			Sleep(100)
+		ElseIf $cvalue == 5 Then
+			ControlSend($handle2, "", "", "1")
+			Sleep(100)
+			ControlSend($handle3, "", "", "1")
+			Sleep(100)
+			ControlSend($handle4, "", "", "1")
+			Sleep(100)
+			ControlSend($handle5, "", "", "1")
+			Sleep(100)
+		EndIf
+		Sleep(120000)
 	EndIf
+
 EndFunc   ;==>AntiAFK
 
 Func Press()
