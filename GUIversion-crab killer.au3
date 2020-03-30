@@ -1,4 +1,4 @@
-#NoTrayIcon
+﻿#NoTrayIcon
 #RequireAdmin
 #include <MsgBoxConstants.au3>
 #include <AutoItConstants.au3>
@@ -9,7 +9,7 @@
 #include <StaticConstants.au3>
 #include <WindowsConstants.au3>
 #Region
-#AutoIt3Wrapper_icon=C:\Users\Administrator\Downloads\1.ico
+#AutoIt3Wrapper_icon=C:\Users\Administrator\Downloads\ico.ico
 #EndRegion
 
 Opt("SendKeyDownDelay", 200)
@@ -28,7 +28,7 @@ HotKeySet("{PAUSE}", "_exit")
 
 
 
-GUICreate("螃蟹杀手", 253, 124, 192, 124)
+GUICreate("螃蟹杀手" , 253, 124, 192, 124)
 GUICtrlCreateLabel("窗口数量", 16, 20, 50, 17)
 Local $iWindow = GUICtrlCreateCombo("1", 74, 16, 41, 25, BitOR($CBS_DROPDOWN, $CBS_AUTOHSCROLL))
 GUICtrlSetOnEvent(-1, "WindowCount")
@@ -42,7 +42,7 @@ GUICtrlSetOnEvent(-1, "AAFFKK")
 $Input1 = GUICtrlCreateInput("50", 184, 16, 49, 21)
 GUICtrlSetOnEvent(-1, "_exit")
 GUICtrlCreateLabel("技能次数", 128, 19, 50, 17)
-GUISetOnEvent($GUI_EVENT_CLOSE, "_exit")
+
 $Input2 = GUICtrlCreateInput("4", 160, 52, 41, 21)
 GUICtrlCreateLabel("挂机循环", 104, 56, 52, 25)
 GUICtrlCreateLabel("分钟", 208, 56, 36, 25)
@@ -58,10 +58,8 @@ WEnd
 
 
 Func _exit()
-	If @GUI_CtrlId = $GUI_EVENT_CLOSE Then
-		releasekey()
-		Exit
-	EndIf
+	$selfpid = ProcessExists("GUIversion-crab killer.exe")
+	ProcessClose($selfpid)
 EndFunc   ;==>_exit
 
 Func WindowCount()
@@ -107,44 +105,43 @@ EndFunc   ;==>WindowCount
 Func AAFFKK()
 	$cvalue = GUICtrlRead($iWindow)
 	While 1
-		If _IsChecked($allafk) Then
-			If $cvalue == 1 Then
-				ControlSend($handle1, "", "", "1")
-			ElseIf $cvalue == 2 Then
-				ControlSend($handle1, "", "", "1")
-				Sleep(100)
-				ControlSend($handle2, "", "", "1")
-				Sleep(100)
-			ElseIf $cvalue == 3 Then
-				ControlSend($handle1, "", "", "1")
-				Sleep(100)
-				ControlSend($handle2, "", "", "1")
-				Sleep(100)
-				ControlSend($handle3, "", "", "1")
-				Sleep(100)
-			ElseIf $cvalue == 4 Then
-				ControlSend($handle1, "", "", "1")
-				Sleep(100)
-				ControlSend($handle2, "", "", "1")
-				Sleep(100)
-				ControlSend($handle3, "", "", "1")
-				Sleep(100)
-				ControlSend($handle4, "", "", "1")
-				Sleep(100)
-			ElseIf $cvalue == 5 Then
-				ControlSend($handle1, "", "", "1")
-				Sleep(100)
-				ControlSend($handle2, "", "", "1")
-				Sleep(100)
-				ControlSend($handle3, "", "", "1")
-				Sleep(100)
-				ControlSend($handle4, "", "", "1")
-				Sleep(100)
-				ControlSend($handle5, "", "", "1")
-				Sleep(100)
-			EndIf
-			Sleep($afktimer*1000*60)
+		If $cvalue == 1 Then
+			ControlSend($handle1, "", "", "{SPACE}")
+		ElseIf $cvalue == 2 Then
+			ControlSend($handle1, "", "", "{SPACE}")
+			Sleep(100)
+			ControlSend($handle2, "", "", "{SPACE}")
+			Sleep(100)
+		ElseIf $cvalue == 3 Then
+			ControlSend($handle1, "", "", "{SPACE}")
+			Sleep(100)
+			ControlSend($handle2, "", "", "{SPACE}")
+			Sleep(100)
+			ControlSend($handle3, "", "", "{SPACE}")
+			Sleep(100)
+		ElseIf $cvalue == 4 Then
+			ControlSend($handle1, "", "", "{SPACE}")
+			Sleep(100)
+			ControlSend($handle2, "", "", "{SPACE}")
+			Sleep(100)
+			ControlSend($handle3, "", "", "{SPACE}")
+			Sleep(100)
+			ControlSend($handle4, "", "", "{SPACE}")
+			Sleep(100)
+		ElseIf $cvalue == 5 Then
+			ControlSend($handle1, "", "", "{SPACE}")
+			Sleep(100)
+			ControlSend($handle2, "", "", "{SPACE}")
+			Sleep(100)
+			ControlSend($handle3, "", "", "{SPACE}")
+			Sleep(100)
+			ControlSend($handle4, "", "", "{SPACE}")
+			Sleep(100)
+			ControlSend($handle5, "", "", "{SPACE}")
+			Sleep(100)
 		EndIf
+		releasekey()
+		Sleep($afktimer * 1000 * 60 * Random(0.9,1.1))
 	WEnd
 EndFunc   ;==>AAFFKK
 
@@ -163,28 +160,28 @@ Func AntiAFK()
 	$cvalue = GUICtrlRead($iWindow)
 	If _IsChecked($iAntiAFK) Then
 		If $cvalue == 2 Then
-			ControlSend($handle2, "", "", "1")
+			ControlSend($handle2, "", "", "{SPACE}")
 			Sleep(100)
 		ElseIf $cvalue == 3 Then
-			ControlSend($handle2, "", "", "1")
+			ControlSend($handle2, "", "", "{SPACE}")
 			Sleep(100)
-			ControlSend($handle3, "", "", "1")
+			ControlSend($handle3, "", "", "{SPACE}")
 			Sleep(100)
 		ElseIf $cvalue == 4 Then
-			ControlSend($handle2, "", "", "1")
+			ControlSend($handle2, "", "", "{SPACE}")
 			Sleep(100)
-			ControlSend($handle3, "", "", "1")
+			ControlSend($handle3, "", "", "{SPACE}")
 			Sleep(100)
-			ControlSend($handle4, "", "", "1")
+			ControlSend($handle4, "", "", "{SPACE}")
 			Sleep(100)
 		ElseIf $cvalue == 5 Then
-			ControlSend($handle2, "", "", "1")
+			ControlSend($handle2, "", "", "{SPACE}")
 			Sleep(100)
-			ControlSend($handle3, "", "", "1")
+			ControlSend($handle3, "", "", "{SPACE}")
 			Sleep(100)
-			ControlSend($handle4, "", "", "1")
+			ControlSend($handle4, "", "", "{SPACE}")
 			Sleep(100)
-			ControlSend($handle5, "", "", "1")
+			ControlSend($handle5, "", "", "{SPACE}")
 			Sleep(100)
 		EndIf
 		Sleep(120000)
